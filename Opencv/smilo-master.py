@@ -5,6 +5,7 @@ smileCascade= cv2.CascadeClassifier('haarcascade_smile.xml')
 # grab the reference to the webcam
 vs = cv2.VideoCapture(0)
 smilecount=0
+smileval=0
 # keep looping
 while True:
 	# grab the current frame
@@ -24,16 +25,17 @@ while True:
 		face_gray = gray[y:y+h, x:x+w]
 		face_color = frame[y:y+h, x:x+w]
 		smiles = smileCascade.detectMultiScale(face_gray, scaleFactor=1.7, minNeighbors=20)
-		print(faces)
 		if(len(smiles)==0):
-				smilecount=0
-				print(f' + {smilecount} smilecount if')
+				smileval = smilecount
+				if(smileval>0):
+					print(f' + {smileval} smilecount to api')
+					smilecount=0	
 		else:
 			for (ex,ey,ew,eh) in smiles:
 				#print('face')
 					cv2.rectangle(face_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),1)
 					smilecount=smilecount+len(smiles)
-					print(f' + {smilecount} smilecount else')
+					print(f' + {smilecount} smilecount')
 	
 	# show the frame to our screen
 	cv2.imshow("Video", frame)
